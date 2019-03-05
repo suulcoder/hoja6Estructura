@@ -1,7 +1,7 @@
 class Carta{
 	
-	private nombre;
-	private tipo;
+	private String nombre;
+	private String tipo;
 
 	public Carta(String nombre, String tipo){
 		this.nombre=nombre;

@@ -1,32 +1,107 @@
 import java.util.HashMap;
 import java.util.Map;
-class coleccion{
+import java.util.ArrayList;
+import java.util.Iterator;
+class Coleccion{
 	
-	private Map <String, Carta> global = new HashMap<String,Carta>();
-	private Map <String, Carta> local = new HashMap<String,Carta>();
+	private MapFactory factory = new MapFactory();
+	private Map <String, Carta> global;//Coleccion del sistema
+	private Map <String, Carta> local;//Coleccion del usuario
+
+	public Coleccion(String needed){
+		this.global = factory.getMap(needed);
+		this.local = factory.getMap(needed);
+
+	}
 
 	public String generateid(Carta carta){
 		int id = 0;
-		if carta.getTipo()=="Trampa"{
-			id = 1
+		//Solo existen tres tipos disponibles
+		if (carta.getTipo().equals("Trampa")){
+			id = 1;
 		}
-		else if carta.getTipo()=="Hechizo"{
-			id = 2
+		else if(carta.getTipo().equals("Hechizo")){
+			id = 2;
 		}
-		else if carta.getTipo()=="Monstruo"{
-			id = 3
+		else if(carta.getTipo().equals("Monstruo")){
+			id = 3;
 		}
-		return(id+carta.getNombre())
+		return(id+carta.getNombre());//Devolvemos un id unico.
 	}
 
-	public void add(String id, Carta carta, boolean global){
-		if global{
-			global.put(id,carta)
+	public void add(String id, Carta carta, boolean useglobal){//Agregar una coleccion
+		//Si useglobal es verdadero, se utilizara la coleccion global.
+		if(useglobal){
+			global.put(id,carta);
 		}
 		else{
-			local.put(id,carta)
+			local.put(id,carta);
 		}
 	}
 
-	
+	public String mostrar(boolean useglobal){//Devuelve todos los elementos del MAP
+		//Si useglobal es verdadera, esta devuelve los elmentos de la coleccion glboal
+		String retorno = "";
+		if (useglobal){
+			Iterator it = global.keySet().iterator();//Iteramos el hash
+			while(it.hasNext()){
+				Object key = it.next();
+				retorno = retorno + ("Tipo: " + global.get(key).getTipo() + " Nombre: " + global.get(key).getNombre());
+			}
+		}
+		else{
+			Iterator it = local.keySet().iterator();//Iteramos el hash
+			while(it.hasNext()){
+				Object key = it.next();
+				retorno = retorno + ("Tipo: " + local.get(key).getTipo() + " Nombre: " + local.get(key).getNombre());
+			}
+		}
+		return retorno;
+	}
+
+	public String mostrar(boolean useglobal, boolean ordenar){
+		String retorno = "";
+		ArrayList<Carta> actualCollection = new ArrayList<Carta>();
+		if (useglobal){
+			Iterator it = global.keySet().iterator();//Iteramos el hash
+			while(it.hasNext()){
+				Object key = it.next();
+				actualCollection.add(global.get(key));
+			}
+		}
+		else{
+			Iterator it = local.keySet().iterator();//Iteramos el hash
+			while(it.hasNext()){
+				Object key = it.next();
+				actualCollection.add(local.get(key));
+			}
+		}
+		for(int i=0;i<actualCollection.size();i++){
+			if (actualCollection.get(i).getTipo().equals("Trampa")){
+				retorno = retorno + ("Tipo: " + actualCollection.get(i).getTipo() + " Nombre: " + actualCollection.get(i).getNombre());
+			}
+		}
+		for(int j=0;j<actualCollection.size();j++){
+			if (actualCollection.get(j).getTipo().equals("Trampa")){
+				retorno = retorno + ("Tipo: " + actualCollection.get(j).getTipo() + " Nombre: " + actualCollection.get(j).getNombre());
+			}
+		}for(int k=0;k<actualCollection.size();k++){
+			if (actualCollection.get(k).getTipo().equals("Trampa")){
+				retorno = retorno + ("Tipo: " + actualCollection.get(k).getTipo() + " Nombre: " + actualCollection.get(k).getNombre());
+			}
+		}
+		return retorno;
+	}
+
+	public String getSpecific(String nombre){
+		String tipo = "";
+		Iterator it = global.keySet().iterator();//Iteramos el hash
+		while(it.hasNext()){//Iteramos en busca del nombre
+			Object key = it.next();
+			if(global.get(key).getNombre().equals(nombre)){//al cencontrarlo
+				tipo = global.get(key).getTipo();//returnar tipo
+			}
+		}
+		return tipo;
+	}
 }
