@@ -14,7 +14,11 @@ class Coleccion{
 
 	}
 
-	public String generateid(Carta carta){
+	public int Size(){
+		return global.size();
+	}
+
+	public String generateId(Carta carta){
 		int id = 0;
 		//Solo existen tres tipos disponibles
 		if (carta.getTipo().equals("Trampa")){
