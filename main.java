@@ -33,7 +33,9 @@ public class Main extends JFrame implements ActionListener{
 	private Panel panelEntrada, panelCentro, panelSalida;
 	private JPanel panelDeLaVentana;
 	//Coleccion con los metodos para realizar acciones
-	private Coleccion coleccion;
+	private Coleccion coleccion = new Coleccion(map_string);//Creamos una coleccion inicial para evita el NullPointerException
+	private ArrayList<String> allCarts	 = new ArrayList<String>();//Nos sera util para el selection box
+	private ArrayList<String> types = new ArrayList<String>();
 
 	public static void main(String[] args) {
 		/*Imprimimos la ventana en la pantalla*/
@@ -46,33 +48,41 @@ public class Main extends JFrame implements ActionListener{
 
 	public Main(){
 		super("Hoja 6");/*Sera el nombre de la ventana*/
-		String[] allCarts = new String[8861];
-		String[] types = new String[8861]; 
 		String cadena;
-		FileReader f = new FileReader("cards_desc.txt");
-		BufferedReader b = new BufferedReader(f);
-		int index = 0;
-		while((cadena = b.readLine())!=null) {
-			int pos=cadena.indexOf('|');
-			String tipo = cadena.substring(pos);
-			String nombre = cadena.substring(0,pos);
+		ArrayList<String> operation = new ArrayList<String>();
+	    int operator = 0;
+	    int operand = 0;
+	    try {//si no es un operando
+            Stream<String> lines = Files.lines(
+                    Paths.get("cards_desc.txt"),//Leemos el archivo
+                    StandardCharsets.UTF_8
+            );
+            lines.forEach(s ->{
+                    operation.add(s);
+            });
+        }catch (IOException exception){
+            System.out.println("Error");
+        }
+        for(int a=0; a<operation.size();a++){
+			
+			int index =operation.get(a).indexOf('|');//Creamos dos substrings
+			String tipo = operation.get(a).substring(index);
+			String nombre = operation.get(a).substring(0,index);
 			Carta carta = new Carta(nombre, tipo);
 			String id = coleccion.generateId(carta);
 			coleccion.add(id,carta,true);
-			allCarts[index] = nombre;
-			types[index] = tipo;
+			allCarts.add(nombre);
+			types.add(tipo);
 		}
-		b.close();
-		cartas= new JComboBox(allCarts);
-		cartas.setSelectedIndex(8861);
+		
+		Object[] selectionList = allCarts.toArray();//Nuestro selection Box o JcomboBox, requiere un array de Objects
+		cartas = new JComboBox(selectionList);
 		cartas.addActionListener(this);
-
 
 		empezar.setActionCommand("empezar");
 		agregar.setActionCommand("Agregar");
 		ordenar.setActionCommand("ordenar");
 		setMap.setActionCommand("MAP");
-
 
 		//Ingresadr datos
 		globalList.setPreferredSize(new Dimension(1000,250));//dimensiones
@@ -96,7 +106,7 @@ public class Main extends JFrame implements ActionListener{
 
 		setMap.setText(map_string);
 
-		panelEntrada.add(map_index);
+		panelEntrada.add(setMap);
 		panelEntrada.add(setMap);
 		panelEntrada.add(empezar);
 
@@ -113,27 +123,23 @@ public class Main extends JFrame implements ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent e){
-		JComboBox cb = (JComboBox)e.getSource();
-        String actual = (String)cb.getSelectedItem();
-        updateLabel(actual);
-		if("MAP".equals((e.getActionCommand()))){
+		if("MAP".equals((e.getActionCommand()))){//Si desea cambiar el map
 			if (map_index==3){
                 map_index=0;
             }
             map_string = maps[map_index];
 			map_state.setText(map_string);
+			coleccion = new Coleccion(map_string);
 		}
 		else if("empezar".equals((e.getActionCommand()))){
 			globalList.setText(coleccion.mostrar(true));
 			localList.setText(coleccion.mostrar(false));
-			coleccion = new Coleccion(map_string);
 		}
 		else if("Agregar".equals((e.getActionCommand()))){
-			cb = (JComboBox)e.getSource();
-        	actual = (String)cb.getSelectedItem();
-        	int position = cartas.indexOf(actual);
-        	Carta carta1 = new Carta(actual,types[position]);
-        	String id1 = coleccion.generateId();
+        	String actual = (String)cartas.getSelectedItem();
+        	int position = allCarts.indexOf(actual);
+        	Carta carta1 = new Carta(actual,types.get(position));
+        	String id1 = coleccion.generateId(carta1);
         	coleccion.add(id1,carta1,false);
 		}
 		else if("ordenar".equals((e.getActionCommand()))){

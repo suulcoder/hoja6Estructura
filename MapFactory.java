@@ -4,18 +4,19 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class MapFactory{
-	public Map<Integer, String> getMap(String needed){
+	public Map<String, Carta> getMap(String needed){
 		if (needed==null){
 			return null;
 		}
 		else if(needed.equals("HashMap")){
-			return new HashMap<Integer, String>();
+			return new HashMap<String,Carta	>();
 		}
 		else if(needed.equals("TreeMap")){
-			return new TreeMap<Integer, String>();
+			return new TreeMap<String, Carta>();
 		}
 		else if(needed.equals("LinkedHashMap")){
-			return new LinkedHashMap<Integer, String>();
+			return new LinkedHashMap<String	, Carta	>();
 		}
+		return	null;
 	}
 }
