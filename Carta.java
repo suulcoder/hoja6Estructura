@@ -1,4 +1,4 @@
-class Carta{
+public class Carta{
 	
 	private String nombre;
 	private String tipo;

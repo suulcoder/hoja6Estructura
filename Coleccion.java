@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.Iterator;
-class Coleccion{
+public class Coleccion{
 	
 	private MapFactory factory = new MapFactory();
 	private Map <String, Carta> global;//Coleccion del sistema
