@@ -14,6 +14,14 @@ class Coleccion{
 
 	}
 
+	public void setLocal(Map<String, Carta> new_local){
+		this.local = new_local;
+	}
+
+	public Map<String, Carta> getLocal(){
+		return local;
+	}
+
 	public int Size(){
 		return global.size();
 	}
@@ -50,14 +58,14 @@ class Coleccion{
 			Iterator it = global.keySet().iterator();//Iteramos el hash
 			while(it.hasNext()){
 				Object key = it.next();
-				retorno = retorno + ("Tipo: " + global.get(key).getTipo() + " Nombre: " + global.get(key).getNombre());
+				retorno = retorno + ("\nTipo: " + global.get(key).getTipo() + " Nombre: " + global.get(key).getNombre());
 			}
 		}
 		else{
 			Iterator it = local.keySet().iterator();//Iteramos el hash
 			while(it.hasNext()){
 				Object key = it.next();
-				retorno = retorno + ("Tipo: " + local.get(key).getTipo() + " Nombre: " + local.get(key).getNombre());
+				retorno = retorno + ("\nTipo: " + local.get(key).getTipo() + " Nombre: " + local.get(key).getNombre());
 			}
 		}
 		return retorno;
@@ -82,16 +90,16 @@ class Coleccion{
 		}
 		for(int i=0;i<actualCollection.size();i++){
 			if (actualCollection.get(i).getTipo().equals("Trampa")){
-				retorno = retorno + ("Tipo: " + actualCollection.get(i).getTipo() + " Nombre: " + actualCollection.get(i).getNombre());
+				retorno = retorno + ("\nTipo: " + actualCollection.get(i).getTipo() + " Nombre: " + actualCollection.get(i).getNombre());
 			}
 		}
 		for(int j=0;j<actualCollection.size();j++){
-			if (actualCollection.get(j).getTipo().equals("Trampa")){
-				retorno = retorno + ("Tipo: " + actualCollection.get(j).getTipo() + " Nombre: " + actualCollection.get(j).getNombre());
+			if (actualCollection.get(j).getTipo().equals("Hechizo")){
+				retorno = retorno + ("\nTipo: " + actualCollection.get(j).getTipo() + " Nombre: " + actualCollection.get(j).getNombre());
 			}
 		}for(int k=0;k<actualCollection.size();k++){
-			if (actualCollection.get(k).getTipo().equals("Trampa")){
-				retorno = retorno + ("Tipo: " + actualCollection.get(k).getTipo() + " Nombre: " + actualCollection.get(k).getNombre());
+			if (actualCollection.get(k).getTipo().equals("Monstruo")){
+				retorno = retorno + ("\nTipo: " + actualCollection.get(k).getTipo() + " Nombre: " + actualCollection.get(k).getNombre());
 			}
 		}
 		return retorno;
@@ -108,4 +116,6 @@ class Coleccion{
 		}
 		return tipo;
 	}
+
+
 }
